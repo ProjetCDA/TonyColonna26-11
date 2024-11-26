@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Region?>
+
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.example.PrimaryController">
+
+
+    <HBox styleClass="commandeBoutton">
+        <Button fx:id="primaryButton" text="Nouvelle table" onAction="#nouvelleTable"/>
+        <Button fx:id="primaryButton" text="Commande XX" onAction="#switchToSecondary" />
+    </HBox>
+
+    <HBox styleClass="nomTable">
+        <Label fx:id="idUtilisateur" text="" />
+        <Label text="TABLE XX" fx:id="" />
+    </HBox>
+    <TableView fx:id="tableView" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Article" />
+            <TableColumn fx:id="stateColumn" text="​✅ ❌​" />
+            <TableColumn fx:id="priceColumn" text="Prix" />
+        </columns>
+    </TableView>
+    <Label text="PRIX TOTAL:" fx:id="idUtilis" styleClass="prixTotal" />
+    
+    
+    
+
+
+
+    
+    <VBox alignment="center" spacing="30">
+
+        <HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER"  style="">
+            <children>
+
+                <Button fx:id="Envoie" text="Envoie Commande" styleClass="btn-envoie"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                
+
+                <Button fx:id="primaryButton" text="Encaisser" onAction="#switchToTroisiemary" styleClass="btn-encaisser"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                
+
+                <Button fx:id="primaryButton" text="Annuler" styleClass="btn-annuler"/>
+            
+            </children>
+         </HBox>
+
+        <FlowPane fx:id="categoriesContainer" hgap="5" vgap="1" prefWrapLength="200" alignment="CENTER"/>
+        
+
+        <VBox fx:id="detailsContainer"/>
+    </VBox>
+
+
+
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

@@ -1,0 +1,112 @@
+.containerVBox {
+    -fx-alignment: center;
+   
+}
+.commandeBoutton{
+    -fx-alignment: center;
+    -fx-spacing: 220;
+}
+.nomTable{
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+    -fx-background-color: lightgray;
+    -fx-alignment: center;
+    -fx-spacing: 180;
+}
+.payerOuPas{
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+    -fx-background-color: lightgray;
+    -fx-alignment: center;
+    -fx-spacing: 300;
+}
+.prixTotal{
+    -fx-font-weight: bold;
+
+}
+.table-column-header {
+    -fx-alignment: center;
+}
+.bouttonListe{
+    -fx-alignment: center;
+    -fx-spacing: 220;
+}
+.labelListe{
+    -fx-alignment: center;
+}
+.labListe{
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 15 0;
+    -fx-font-size: 13px;
+
+}
+.retourBoutton{
+    -fx-alignment: center_right;
+}
+.labelNewTable{
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.btn-envoie {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-min-width: 120px;
+    -fx-min-height: 35px;
+    -fx-font-size: 12px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #000000;
+    -fx-border-style: solid;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.btn-envoie:hover {
+    -fx-background-color: #388E3C;
+    -fx-border-color: #1B5E20;
+}
+
+.btn-encaisser {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-min-width: 120px;
+    -fx-min-height: 35px;
+    -fx-font-size: 12px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #000000;
+    -fx-border-style: solid;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.btn-encaisser:hover {
+    -fx-background-color: #1976D2;
+    -fx-border-color: #1565C0;
+}
+
+.btn-annuler {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+    -fx-min-width: 120px;
+    -fx-min-height: 35px;
+    -fx-font-size: 12px;
+    -fx-padding: 10px 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #000000;
+    -fx-border-style: solid;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.btn-annuler:hover {
+    -fx-background-color: #D32F2F;
+    -fx-border-color: #C62828;
+}
