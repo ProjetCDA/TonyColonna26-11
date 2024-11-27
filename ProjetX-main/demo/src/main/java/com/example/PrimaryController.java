@@ -2,11 +2,14 @@ package com.example;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
+import com.example.DAO.DataCommandItem;
 import com.example.DAO.DataProduits;
 import com.example.DAO.DataUser;
 import com.example.model.Categorie;
+import com.example.model.CommandItem;
 import com.example.model.Produit;
 import com.example.model.SousCategorie;
 import com.example.model.Supplement;
@@ -27,11 +30,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 public class PrimaryController {
 
@@ -94,10 +99,13 @@ private void nouvelleTable(ActionEvent event) {
         try {
             int tableId = Integer.parseInt(response);
             int userId = UserSession.getInstance().getIdUser();
-            boolean success = DataUser.createTableWithSpecificId(tableId, userId);
+            Integer idcommand = DataUser.createTableWithSpecificId(tableId, userId);
+            UserSession.getInstance().setId_commande(idcommand);
+            System.out.println(UserSession.getInstance().getId_commande());
 
-            if (success) {
+            if (idcommand != null) {
                 System.out.println("Table " + tableId + " associée avec succès !");
+                System.out.println("idcommand = " + idcommand);
             } else {
                 System.out.println("Table " + tableId + " déjà occupée ou inexistante.");
             }
@@ -107,6 +115,7 @@ private void nouvelleTable(ActionEvent event) {
             e.printStackTrace();
         }
     });
+    
 }
 
     //CREATION D UNE NOUVELLE TABLE//
@@ -123,7 +132,7 @@ private void nouvelleTable(ActionEvent event) {
     private final ObservableList<SousCategorie> sousCategories = FXCollections.observableArrayList();
     private final ObservableList<Produit> produits = FXCollections.observableArrayList();
     private final ObservableList<Supplement> supplements = FXCollections.observableArrayList();
-    private final ObservableList<Produit> productsSelection = FXCollections.observableArrayList();
+    private final ObservableList<CommandItem> productsSelection = FXCollections.observableArrayList();
     
 
     //CHARGE LES MENUS STATIQUE//
@@ -390,8 +399,29 @@ private void nouvelleTable(ActionEvent event) {
     for (Produit produit : produits) {
         if (produit.getId() == idProduit) {
             produitTrouve = true;
-            Produit produitFini = new Produit(produit.getId(), produit.getName(), produit.getCategoryId(), produit.getCouleur(), supplementsSelectionnes);
-            productsSelection.add(produitFini);
+            CommandItem existingItem = null;
+            for (CommandItem item : productsSelection) {
+                if (item.getProduit().getId() == produit.getId() && areSupplementsEqual(item.getListSupplements(), supplementsSelectionnes)) {
+                    existingItem = item;
+                    break;
+                }
+            }
+        if (existingItem !=null) {
+            existingItem.setQuantite(existingItem.getQuantite() + 1);
+            System.out.println("Produit ajouté : " + produit.getName() + " (sans supplément) et quantité= " + existingItem.getQuantite());
+        }
+        else{
+            CommandItem commandItem = new CommandItem();
+            commandItem.setProduit(produit);
+            commandItem.setQuantite(1);
+            commandItem.setListSupplements(supplementsSelectionnes);
+
+            productsSelection.add(commandItem);
+            System.out.println("Produit ajouté : " + produit.getName() + " (sans supplément) et quantité= " + commandItem.getQuantite());
+        }
+        
+
+            
   
             if (supplementsSelectionnes != null && !supplementsSelectionnes.isEmpty()) {
                 System.out.println("Produit ajouté : " + produit.getName() + " Supplément(s) : " + supplementsSelectionnes.stream()
@@ -401,8 +431,6 @@ private void nouvelleTable(ActionEvent event) {
         else {
             System.out.println("Produit ajouté : " + produit.getName() + " (sans supplément)");
     }
-        
-
             break;
         }
     }
@@ -411,6 +439,18 @@ private void nouvelleTable(ActionEvent event) {
         System.out.println("Produit avec ID " + idProduit + " introuvable.");
     }
     afficherProductsSelection();
+    
+}
+
+private boolean areSupplementsEqual(ObservableList<Supplement> list1, ObservableList<Supplement> list2) {
+    if (list1 == null && list2 == null) {
+        return true;
+    }
+    if (list1 == null || list2 == null) {
+        return false;
+    }
+
+    return new HashSet<>(list1).equals(new HashSet<>(list2));
 }
 
 private void afficherProductsSelection() {
@@ -420,17 +460,17 @@ private void afficherProductsSelection() {
     }
 
     System.out.println("Liste des produits sélectionnés :");
-    for (Produit produit : productsSelection) {
-        System.out.println("Produit ID: " + produit.getId());
-        System.out.println("Nom: " + produit.getName());
-        System.out.println("Couleur: " + produit.getCouleur());
-        System.out.println("ID Sous-catégorie: " + produit.getCategoryId());
+    for ( CommandItem item : productsSelection) {
+        System.out.println("Produit ID: " + item.getId());
+        System.out.println("Nom: " + item.getProduit().getName());
+        System.out.println("Couleur: " + item.getProduit().getCouleur());
+        System.out.println("ID Sous-catégorie: " + item.getProduit().getCategoryId());
 
-        if (produit.getSupplements().isEmpty()) {
+        if (item.getProduit().getSupplements().isEmpty()) {
             System.out.println("Aucun supplément associé.");
         } else {
             System.out.println("Suppléments associés :");
-            for (Supplement supplement : produit.getSupplements()) {
+            for (Supplement supplement : item.getProduit().getSupplements()) {
                 System.out.println("    - " + supplement.getNom() + " (Prix: " + supplement.getPrix() + ")");
             }
         }
@@ -438,18 +478,39 @@ private void afficherProductsSelection() {
     }
 }
 
-    @FXML
-    private TableView<Produit> tableView;
-    @FXML
-    private TableColumn<Produit, String> nameColumn;
+@FXML
+private TableView<CommandItem> tableView;
+@FXML
+private TableColumn<CommandItem, String> nameColumn;
+@FXML
+private TableColumn<CommandItem, Integer> quantityColumn;
 
-    @FXML
-    private void listing() {
+@FXML
+private void listing() {
+    
+    nameColumn.setCellValueFactory(cellData -> 
+        cellData.getValue().getProduit() != null
+            ? new SimpleStringProperty(cellData.getValue().getProduit().getName())
+            : new SimpleStringProperty(""));
+    
+    quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantite"));
+    quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        tableView.setItems(productsSelection);
-        tableView.setEditable(true);
-    }
+    tableView.setItems(productsSelection);
+
+    tableView.setEditable(true);
+}
+
+@FXML
+private Button envoie;
+
+@FXML
+private void sendCommand(){
+    System.out.println("Envoie appuyé");
+    DataCommandItem.insertBddProduct(productsSelection, UserSession.getInstance().getId_commande());
+    
+}
+
 
 }

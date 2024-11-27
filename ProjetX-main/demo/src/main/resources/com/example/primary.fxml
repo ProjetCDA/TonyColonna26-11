@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Region?>
 
-
 <VBox spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.example.PrimaryController">
 
@@ -29,6 +28,7 @@
         <columns>
             <TableColumn fx:id="nameColumn" text="Article" />
             <TableColumn fx:id="stateColumn" text="​✅ ❌​" />
+            <TableColumn fx:id="quantityColumn" text="​Quantité​" />
             <TableColumn fx:id="priceColumn" text="Prix" />
         </columns>
     </TableView>
@@ -42,10 +42,10 @@
     
     <VBox alignment="center" spacing="30">
 
-        <HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER"  style="">
+        <HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER"  style="" >
             <children>
 
-                <Button fx:id="Envoie" text="Envoie Commande" styleClass="btn-envoie"/>
+                <Button fx:id="Envoie" text="Envoie Commande" styleClass="btn-envoie" onAction="#sendCommand"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 
 

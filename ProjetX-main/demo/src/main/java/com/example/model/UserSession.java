@@ -7,6 +7,7 @@ public class UserSession {
     private int idUser;
     private String identifiant;
     private String nom;
+    private int id_commande;
 
     // Constructeur privé pour le singleton
     private UserSession() {}
@@ -43,6 +44,15 @@ public class UserSession {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    public int getId_commande() {
+        return id_commande;
+    }
+
+    public void setId_commande(int id_commande) {
+        this.id_commande = id_commande;
+    }
+
 
     // Réinitialiser la session à la déconnexion
     public void clearSession() {
